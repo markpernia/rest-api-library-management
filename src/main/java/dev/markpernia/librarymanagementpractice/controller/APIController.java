@@ -14,7 +14,7 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/")
 public class APIController {
 
     private AuthorService authorService;
@@ -78,7 +78,6 @@ public class APIController {
 
     @GetMapping("/books/{id}")
     public ResponseEntity<?> getBook(@PathVariable Long id) {
-        // todo return specific book, including authors details
 
         try {
             BookDTO book = bookService.findBookById(id);
