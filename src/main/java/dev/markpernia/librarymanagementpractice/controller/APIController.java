@@ -1,6 +1,10 @@
 package dev.markpernia.librarymanagementpractice.controller;
 
+import dev.markpernia.librarymanagementpractice.dto.AuthorDTO;
+import dev.markpernia.librarymanagementpractice.dto.ErrorDTO;
 import dev.markpernia.librarymanagementpractice.entity.Author;
+import dev.markpernia.librarymanagementpractice.service.AuthorService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,13 +16,22 @@ import java.util.List;
 @RequestMapping("/api")
 public class APIController {
 
+    private AuthorService authorService;
+
+    @Autowired
+    public APIController(AuthorService authorService) {
+        this.authorService = authorService;
+    }
+
     @GetMapping("/authors")
     public ResponseEntity<?> listOfAuthors() {
 
         try {
-            //todo return ResponseEntity.ok().body(List<AuthorDTO>)
+            List<AuthorDTO> authors = authorService.findAllAuthors();
+            return ResponseEntity.ok().body(authors);
         } catch (Exception e) {
-            //todo return ResponseEntity.badRequest().body(errorDTO)
+            return ResponseEntity.badRequest().body(new ErrorDTO("No data was found"));
         }
+
     }
 }
