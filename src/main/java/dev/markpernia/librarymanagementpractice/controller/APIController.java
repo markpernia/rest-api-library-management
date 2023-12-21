@@ -6,11 +6,9 @@ import dev.markpernia.librarymanagementpractice.entity.Author;
 import dev.markpernia.librarymanagementpractice.service.AuthorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -46,5 +44,20 @@ public class APIController {
             return ResponseEntity.badRequest().body(new ErrorDTO("No data was found"));
         }
 
+    }
+
+    @PostMapping("/authors")
+    public ResponseEntity<?> addAuthor(@RequestBody AuthorDTO authorDTO) {
+
+        if (authorService.isNotValid(authorDTO)) {
+            return ResponseEntity.badRequest().body(new ErrorDTO("invalid data provided"));
+        }
+
+        try {
+            authorService.addAuthor(authorDTO);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new ErrorDTO("invalid data provided"));
+        }
+        return ResponseEntity.created(URI.create("/")).body(authorDTO);
     }
 }
