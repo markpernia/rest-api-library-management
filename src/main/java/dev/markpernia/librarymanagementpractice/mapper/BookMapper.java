@@ -17,10 +17,10 @@ public class BookMapper {
     @Autowired
     public BookMapper(ModelMapper modelMapper) {
         this.modelMapper = modelMapper;
-        configureMappings();
+        configureToDTO();
     }
 
-    private void configureMappings() {
+    private void configureToDTO() {
         TypeMap<Book, BookDTO> typeMap = modelMapper.createTypeMap(Book.class, BookDTO.class);
         typeMap.addMapping(b -> b.getAuthor().getName(), BookDTO::setAuthorName);
         typeMap.addMapping(b -> b.getAuthor().getEmail(), BookDTO::setAuthorsEmail);
@@ -29,4 +29,5 @@ public class BookMapper {
     public BookDTO toDTO(Book book) {
         return Objects.isNull(book) ? null : modelMapper.map(book, BookDTO.class);
     }
+
 }

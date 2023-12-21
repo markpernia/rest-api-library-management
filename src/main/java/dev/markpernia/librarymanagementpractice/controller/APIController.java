@@ -71,7 +71,19 @@ public class APIController {
         try {
             List<BookDTO> books = bookService.findAllBooks();
             return ResponseEntity.ok().body(books);
-        }  catch (Exception e) {
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new ErrorDTO(e.getMessage()));
+        }
+    }
+
+    @GetMapping("/books/{id}")
+    public ResponseEntity<?> getBook(@PathVariable Long id) {
+        // todo return specific book, including authors details
+
+        try {
+            BookDTO book = bookService.findBookById(id);
+            return ResponseEntity.ok().body(book);
+        } catch (Exception e) {
             return ResponseEntity.badRequest().body(new ErrorDTO(e.getMessage()));
         }
     }

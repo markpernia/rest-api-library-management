@@ -25,4 +25,5 @@ public class AuthorMapper {
     public Author toEntity(AuthorDTO authorDTO) {
         return Objects.isNull(authorDTO) ? null : modelMapper.map(authorDTO, Author.class);
     }
+
 }
