@@ -40,6 +40,12 @@ public class AuthorService {
             throw new Exception("no authors was found");
         }
 
+        for (AuthorDTO authorDTO : authors) {
+            if (isNotValid(authorDTO)) {
+                throw new Exception("found an author with null fields");
+            }
+        }
+
         return authors;
 
     }
