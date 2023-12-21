@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AuthorService {
@@ -31,6 +32,17 @@ public class AuthorService {
         } catch (Exception e) {
             throw new Exception("no authors was found");
         }
+
+    }
+
+    public AuthorDTO findAuthorById(Long id) throws Exception {
+
+        Optional<Author> author = authorRepository.findAuthorById(id);
+        if (author.isEmpty()) {
+            throw new Exception("no author was found");
+        }
+
+        return authorMapper.toDTO(author.get());
 
     }
 }

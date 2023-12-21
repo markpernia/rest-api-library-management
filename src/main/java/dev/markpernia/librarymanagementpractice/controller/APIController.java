@@ -7,6 +7,7 @@ import dev.markpernia.librarymanagementpractice.service.AuthorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -29,6 +30,18 @@ public class APIController {
         try {
             List<AuthorDTO> authors = authorService.findAllAuthors();
             return ResponseEntity.ok().body(authors);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new ErrorDTO("No data was found"));
+        }
+
+    }
+
+    @GetMapping("/authors/{id}")
+    public ResponseEntity<?> getAuthor(@PathVariable Long id) {
+
+        try {
+            AuthorDTO author = authorService.findAuthorById(id);
+            return ResponseEntity.ok().body(author);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new ErrorDTO("No data was found"));
         }
