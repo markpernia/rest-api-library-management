@@ -86,4 +86,22 @@ public class APIController {
             return ResponseEntity.badRequest().body(new ErrorDTO(e.getMessage()));
         }
     }
+
+    @PostMapping("/books")
+    public ResponseEntity<?> addBook(@RequestBody BookDTO bookDTO) {
+
+        if (bookService.isNotValid(bookDTO)) {
+            return ResponseEntity.badRequest().body(new ErrorDTO("invalid data provided"));
+        }
+
+        try {
+            bookService.add(bookDTO);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new ErrorDTO(e.getMessage()));
+        }
+        return ResponseEntity.created(URI.create("/")).body(bookDTO);
+    }
+
+    //todo PUT
+
 }

@@ -2,9 +2,12 @@ package dev.markpernia.librarymanagementpractice.service;
 
 import dev.markpernia.librarymanagementpractice.dto.AuthorDTO;
 import dev.markpernia.librarymanagementpractice.dto.BookDTO;
+import dev.markpernia.librarymanagementpractice.entity.Author;
 import dev.markpernia.librarymanagementpractice.entity.Book;
 import dev.markpernia.librarymanagementpractice.mapper.BookMapper;
+import dev.markpernia.librarymanagementpractice.repository.AuthorRepository;
 import dev.markpernia.librarymanagementpractice.repository.BookRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,11 +19,15 @@ public class BookService {
 
     private BookRepository bookRepository;
     private BookMapper bookMapper;
+    private AuthorRepository authorRepository;
 
     @Autowired
-    public BookService(BookRepository bookRepository, BookMapper bookMapper) {
+    public BookService(BookRepository bookRepository,
+                       BookMapper bookMapper,
+                       AuthorRepository authorRepository) {
         this.bookRepository = bookRepository;
         this.bookMapper = bookMapper;
+        this.authorRepository = authorRepository;
     }
 
 
@@ -70,6 +77,23 @@ public class BookService {
         return bookDTO;
     }
 
+    @Transactional
+    public void add(BookDTO bookDTO) throws Exception {
+
+        Optional<Author> author = authorRepository.findAuthorById(bookDTO.getAuthorId());
+        if (author.isEmpty()) {
+            throw new Exception("no author was found");
+        }
+
+        Book book = bookMapper.toEntity(bookDTO);
+        if (book == null) {
+            throw new Exception("no data was found");
+        }
+
+        book.setAuthor(author.get());
+        bookRepository.save(book);
+    }
+
     public boolean isNotValid(BookDTO bookDTO) {
 
         if (bookDTO.getTitle() == null || bookDTO.getTitle().trim().isEmpty()) {
@@ -80,15 +104,6 @@ public class BookService {
             return true;
         }
 
-        if (bookDTO.getAuthorName() == null || bookDTO.getAuthorName().trim().isEmpty()) {
-            return true;
-        }
-
-        if (bookDTO.getAuthorsEmail() == null || bookDTO.getAuthorsEmail().trim().isEmpty()) {
-            return true;
-        }
-
         return false;
     }
-
 }
