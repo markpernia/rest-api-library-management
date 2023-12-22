@@ -94,6 +94,18 @@ public class BookService {
         bookRepository.save(book);
     }
 
+    public void update(Long bookId, BookDTO bookDTO) throws Exception {
+
+        Optional<Book> book = bookRepository.findBookById(bookId);
+        if (book.isEmpty()) {
+            throw new Exception("no book was found");
+        }
+
+        bookMapper.updateEntity(bookDTO, book.get());
+        bookRepository.save(book.get());
+    }
+
+
     public boolean isNotValid(BookDTO bookDTO) {
 
         if (bookDTO.getTitle() == null || bookDTO.getTitle().trim().isEmpty()) {

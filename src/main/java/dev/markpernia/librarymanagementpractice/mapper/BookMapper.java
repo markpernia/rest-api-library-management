@@ -4,6 +4,7 @@ import dev.markpernia.librarymanagementpractice.dto.BookDTO;
 import dev.markpernia.librarymanagementpractice.entity.Author;
 import dev.markpernia.librarymanagementpractice.entity.Book;
 import dev.markpernia.librarymanagementpractice.repository.AuthorRepository;
+import org.modelmapper.Conditions;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
 import org.modelmapper.TypeMap;
@@ -21,31 +22,26 @@ public class BookMapper {
     @Autowired
     public BookMapper(ModelMapper modelMapper) {
         this.modelMapper = modelMapper;
-        configureToDTO();
-    }
-
-    private void configureToDTO() {
-        TypeMap<Book, BookDTO> typeMap = modelMapper.createTypeMap(Book.class, BookDTO.class);
-        typeMap.addMapping(b -> b.getAuthor().getName(), BookDTO::setAuthorName);
-        typeMap.addMapping(b -> b.getAuthor().getEmail(), BookDTO::setAuthorsEmail);
     }
 
     public BookDTO toDTO(Book book) {
+        modelMapper.typeMap(Book.class, BookDTO.class)
+                .addMapping(b -> b.getAuthor().getName(), BookDTO::setAuthorName);
+
+        modelMapper.typeMap(Book.class, BookDTO.class)
+                .addMapping(b -> b.getAuthor().getEmail(), BookDTO::setAuthorsEmail);
+
         return Objects.isNull(book) ? null : modelMapper.map(book, BookDTO.class);
     }
 
     public Book toEntity(BookDTO bookDTO) {
+        return Objects.isNull(bookDTO) ? null : modelMapper.map(bookDTO, Book.class);
+    }
 
-        if (bookDTO == null) {
-            return null;
-        }
-
-        Book book = modelMapper.map(bookDTO, Book.class);
-        book.setAuthor(null);
-        book.setId(null);
-
-        return book;
-
+    public void updateEntity(BookDTO bookDTO, Book book) {
+        modelMapper.typeMap(BookDTO.class, Book.class)
+                .addMappings(b -> b.skip(Book::setId));
+        modelMapper.map(bookDTO, book);
     }
 
 }

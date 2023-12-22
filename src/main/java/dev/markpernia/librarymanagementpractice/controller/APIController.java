@@ -17,8 +17,8 @@ import java.util.List;
 @RequestMapping("/api/")
 public class APIController {
 
-    private AuthorService authorService;
-    private BookService bookService;
+    private final AuthorService authorService;
+    private final BookService bookService;
 
     @Autowired
     public APIController(AuthorService authorService, BookService bookService) {
@@ -102,6 +102,19 @@ public class APIController {
         return ResponseEntity.created(URI.create("/")).body(bookDTO);
     }
 
-    //todo PUT
+    @PutMapping("/books/{bookId}")
+    public ResponseEntity<?> updateBook(@PathVariable Long bookId,
+                                        @RequestBody BookDTO bookDTO) {
 
+        if (bookService.isNotValid(bookDTO)) {
+            return ResponseEntity.badRequest().body(new ErrorDTO("invalid data provided"));
+        }
+
+        try {
+            bookService.update(bookId, bookDTO);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new ErrorDTO(e.getMessage()));
+        }
+        return ResponseEntity.created(URI.create("/")).body(bookDTO);
+    }
 }
