@@ -1,6 +1,5 @@
 package dev.markpernia.librarymanagementpractice.service;
 
-import dev.markpernia.librarymanagementpractice.dto.AuthorDTO;
 import dev.markpernia.librarymanagementpractice.dto.BookDTO;
 import dev.markpernia.librarymanagementpractice.entity.Author;
 import dev.markpernia.librarymanagementpractice.entity.Book;

@@ -3,7 +3,6 @@ package dev.markpernia.librarymanagementpractice.controller;
 import dev.markpernia.librarymanagementpractice.dto.AuthorDTO;
 import dev.markpernia.librarymanagementpractice.dto.BookDTO;
 import dev.markpernia.librarymanagementpractice.dto.ErrorDTO;
-import dev.markpernia.librarymanagementpractice.entity.Author;
 import dev.markpernia.librarymanagementpractice.service.AuthorService;
 import dev.markpernia.librarymanagementpractice.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
