@@ -1,4 +1,4 @@
-### *This is just a made up REST project for practice <br> feel free to fork it [here](https://github.com/markpernia/library-management.git).*😉
+### *This serves as a fictitious REST project intended for practice purposes.<br>Please feel free to fork it [here](https://github.com/markpernia/library-management.git).😉*
 
 ## Task: Library Management System
 
